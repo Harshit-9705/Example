@@ -170,4 +170,3 @@ def send_mail(request):
     reci = ['bhargavbaldaniya777@gmail.com']
     send_mail_attch(subject,message,reci,file_path)
     return render(request,"email.html")
-
