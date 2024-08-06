@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Management</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Center vertically */
+            height: auto;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 32px;
+            text-align: center;
+            color: #343a40;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-group input[type="file"] {
+            padding: 0;
+            border: none;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            display: inline-block;
+            text-align: center;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            background-color: #003d7a;
+            transform: scale(0.98);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        table th,
+        table td {
+            padding: 15px;
+            border: 1px solid #ced4da;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        table td img {
+            max-width: 120px;
+            border-radius: 8px;
+        }
+
+        .file-label {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .search-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .search-container label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #495057;
+            font-size: 18px;
+        }
+
+        .search-container input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .search-container button {
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+
+        .search-container button:hover {
+            background-color: #218838;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-container button:active {
+            background-color: #1e7e34;
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    
+    <h1>Hello {{request.user.username}} Welcome</h1>
+    <div class="container">
+        <h1>Recipe Management</h1>
+        <a href="logout">Logout</a>
+        <!-- Recipe Submission Form -->
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="recipe-name">Recipe Name</label>
+                <input type="text" id="recipe-name" name="rname" placeholder="Enter recipe name" required>
+            </div>
+            <div class="form-group">
+                <label for="recipe-description">Description</label>
+                <textarea id="recipe-description" name="rdesc" placeholder="Describe the recipe" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="recipe-image">Image</label>
+                <input type="file" id="recipe-image" name="rimg" accept="image/*" required>
+                <span class="file-label">Accepted formats: JPG, PNG, GIF</span>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+
+        <hr>
+
+        <!-- Search Container -->
+        <form>
+            <div class="search-container">
+                <label for="search">Search</label>
+                <input type="text" id="search" name="search" placeholder="Enter your search term">
+                <button type="submit" >Search</button>
+            </div>
+        </form>
+
+        <hr>
+
+        <!-- Recipe List Table -->
+        {% if recipes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Recipe Name</th>
+                    <th>Adder Name</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Delete</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for recipe in recipes %}
+                <tr>
+                    <td>{{ recipe.rname }}</td>
+                    <td>{{ recipe.user }}</td>
+                    <td>{{ recipe.rdesc }}</td>
+                    <td>
+                        {% if recipe.rimg %}
+                        <img src="{{ recipe.rimg.url }}" alt="{{ recipe.rname }}">
+                        {% else %}
+                        No image
+                        {% endif %}
+                    </td>
+                    <td><a href="/delete/{{ recipe.id }}" style="color: #dc3545; text-decoration: none; font-weight: bold;">Delete</a></td>
+                    <td><a href="/update/{{ recipe.id }}" style="color: #28a745; text-decoration: none; font-weight: bold;">Update</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No recipes found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No recipes available.</p>
+        {% endif %}
+    </div>
+</body>
+
+</html>
